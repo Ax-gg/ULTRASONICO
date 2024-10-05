@@ -1,35 +1,44 @@
-int trigPin = 9; // Pin para el TRIG
-int echoPin = 10; // Pin para el ECHO
+int trigPin = 9;   // Pin para el TRIG
+int echoPin = 10;  // Pin para el ECHO
+
 // Función para medir distancia con el sensor ultrasónico
 float ultra() {
-float tiempo_de_espera, distancia;
-// Enviamos una señal corta desde el TRIG
-digitalwrite(trigPin, LOW) ;
-// Ponemos en bajo el pin TRIG
-delayMicroseconds (2);
-// Esperamos 2 microsegundos
-digitalWrite(trigPin, HIGH);
-// Ponemos en alto el pin TRIG
-delayMicroseconds (10);
-// Mantiene el pulso durante 10 microsegundos
-digitalwrite(trigPin, LOW);
-// Detenemos el pulso
-// Recogemos la señal de ECHO (eco de la onda sonora)
-tiempo_de_espera = pulseIn(echoPin, HIGH);
-// Convertimos el tiempo en distancia
-distancia = (tiempo_de_espera / 2.0) / 29.15; // Fórmula para calcular distancia en cm
-// Imprimimos la distancia en el monitor serial
-Serial. print(distancia);
-Serial printin(" cm"); delay (1000); // Pausa de 1 segundo antes de la siguiente medición return distancia;
+  float tiempo_de_espera, distancia;
+  
+  // Enviamos una señal corta desde el TRIG
+  digitalWrite(trigPin, LOW);   // Ponemos en bajo el pin TRIG
+  delayMicroseconds(2);         // Esperamos 2 microsegundos
+  
+  digitalWrite(trigPin, HIGH);  // Ponemos en alto el pin TRIG
+  delayMicroseconds(10);        // Mantiene el pulso durante 10 microsegundos
+  
+  digitalWrite(trigPin, LOW);   // Detenemos el pulso
+
+  // Recogemos la señal de ECHO (eco de la onda sonora)
+  tiempo_de_espera = pulseIn(echoPin, HIGH);
+
+  // Convertimos el tiempo en distancia
+  distancia = (tiempo_de_espera / 2.0) / 29.15;  // Fórmula para calcular distancia en cm
+
+  // Imprimimos la distancia en el monitor serial
+  Serial.print(distancia);
+  Serial.println(" cm");
+
+  delay(1000);  // Pausa de 1 segundo antes de la siguiente medición
+
+  return distancia;
 }
-void setup () {
-// Configurar los pines para el sensor ultrasónico
-pinMode (trigPin, OUTPUT) ;
-pinMode (echoPin, INPUT) ;
-// Iniciar la comunicación serial
-Serial. begin (9600);
-｝
-void 100p() {
-// Llamamos a la función ultra para medin y mostrar la distancia
-ultra();
+
+void setup() {
+  // Configurar los pines para el sensor ultrasónico
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
+  // Iniciar la comunicación serial
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Llamamos a la función ultra para medir y mostrar la distancia
+  ultra();
 }
