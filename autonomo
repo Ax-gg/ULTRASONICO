@@ -24,12 +24,12 @@ void loop() {
   // Medimos la distancia
   int distancia = medirDistancia();
 
-  // Si hay un obstáculo cerca (menos de 5 cm), retroceder y luego girar a la derecha
+  // Si la distancia es menor a 5 cm, retrocede y luego gira a la derecha
   if (distancia < 5) {
     retroceder();
     delay(500);  // Retroceder por 500 ms
     girarDerecha();
-    delay(1000);  // Girar por 1 segundo
+    delay(500);  // Girar por 0.5 segundos (ajustado para que no gire tanto)
   } else {
     avanzar();  // Si no hay obstáculo, seguir avanzando
   }
@@ -52,19 +52,19 @@ int medirDistancia() {
 }
 
 void retroceder() {
-  // Mover ambos motores hacia atrás
-  digitalWrite(R1, LOW);
-  digitalWrite(R2, HIGH);
-  digitalWrite(L1, LOW);
-  digitalWrite(L2, HIGH);
-}
-
-void avanzar() {
-  // Mover ambos motores hacia adelante
+  // Mover ambos motores hacia adelante (antes estaba mal definido)
   digitalWrite(R1, HIGH);
   digitalWrite(R2, LOW);
   digitalWrite(L1, HIGH);
   digitalWrite(L2, LOW);
+}
+
+void avanzar() {
+  // Mover ambos motores hacia atrás (antes estaba mal definido)
+  digitalWrite(R1, LOW);
+  digitalWrite(R2, HIGH);
+  digitalWrite(L1, LOW);
+  digitalWrite(L2, HIGH);
 }
 
 void girarDerecha() {
