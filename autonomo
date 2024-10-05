@@ -1,0 +1,73 @@
+// Pines para los motores
+int R1 = 4;  // Motor Derecho
+int R2 = 5;  // Motor Derecho
+int L1 = 6;  // Motor Izquierdo
+int L2 = 7;  // Motor Izquierdo
+
+// Pines para el sensor ultrasónico
+int trigPin = 9;  // TRIG
+int echoPin = 10; // ECHO
+
+void setup() {
+  // Configuramos los pines de los motores como salida
+  pinMode(R1, OUTPUT);
+  pinMode(R2, OUTPUT);
+  pinMode(L1, OUTPUT);
+  pinMode(L2, OUTPUT);
+
+  // Configuramos los pines del sensor ultrasónico
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  // Medimos la distancia
+  int distancia = medirDistancia();
+
+  // Si hay un obstáculo cerca (menos de 5 cm), retroceder y luego girar a la derecha
+  if (distancia < 5) {
+    retroceder();
+    delay(500);  // Retroceder por 500 ms
+    girarDerecha();
+    delay(1000);  // Girar por 1 segundo
+  } else {
+    avanzar();  // Si no hay obstáculo, seguir avanzando
+  }
+
+  delay(100);  // Esperar un poco antes de medir de nuevo
+}
+
+int medirDistancia() {
+  // Enviar señal del TRIG
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Recibir la señal de ECHO y calcular la distancia
+  int duracion = pulseIn(echoPin, HIGH);
+  int distancia = duracion * 0.034 / 2;  // Convertir tiempo en distancia en cm
+  return distancia;
+}
+
+void retroceder() {
+  digitalWrite(R1, HIGH);
+  digitalWrite(R2, LOW);
+  digitalWrite(L1, HIGH);
+  digitalWrite(L2, LOW);
+}
+
+void avanzar() {
+  digitalWrite(R1, LOW);
+  digitalWrite(R2, HIGH);
+  digitalWrite(L1, LOW);
+  digitalWrite(L2, HIGH);
+}
+
+void girarDerecha() {
+  digitalWrite(R1, LOW);
+  digitalWrite(R2, HIGH);
+  digitalWrite(L1, HIGH);
+  digitalWrite(L2, LOW);
+}
