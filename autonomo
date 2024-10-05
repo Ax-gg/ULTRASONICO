@@ -52,20 +52,23 @@ int medirDistancia() {
 }
 
 void retroceder() {
-  digitalWrite(R1, HIGH);
-  digitalWrite(R2, LOW);
-  digitalWrite(L1, HIGH);
-  digitalWrite(L2, LOW);
-}
-
-void avanzar() {
+  // Mover ambos motores hacia atrás
   digitalWrite(R1, LOW);
   digitalWrite(R2, HIGH);
   digitalWrite(L1, LOW);
   digitalWrite(L2, HIGH);
 }
 
+void avanzar() {
+  // Mover ambos motores hacia adelante
+  digitalWrite(R1, HIGH);
+  digitalWrite(R2, LOW);
+  digitalWrite(L1, HIGH);
+  digitalWrite(L2, LOW);
+}
+
 void girarDerecha() {
+  // Mover el carrito hacia la derecha
   digitalWrite(R1, LOW);
   digitalWrite(R2, HIGH);
   digitalWrite(L1, HIGH);
