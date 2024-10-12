@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial ble(12,13);
+// Inicializamos el BLE en los pines 2 (RX) y 3 (TX)
+SoftwareSerial ble(2, 3);
 
 int in1 = 4;
 int in2 = 5;
@@ -8,51 +9,54 @@ int in3 = 6;
 int in4 = 7;
 
 void setup() {
-  // Motores
+  // Configuración de los pines del motor
   pinMode(in1, OUTPUT);
   pinMode(in2, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
 
-  // Sistema de comunicación
+  // Iniciamos la comunicación serie
   Serial.begin(9600);
   ble.begin(9600);
 }
 
 void loop() {
   if (ble.available()) {
-    // Pruebas Teleoperado
+    // Leemos el comando del BLE
     char car = ble.read();
-    Serial.println(car);
-    if (car == 'A')
+    Serial.println(car);  // Imprimimos el carácter recibido para depuración
+
+    // Controlamos los motores según el comando recibido
+    if (car == 'A') {
       adelante();
-    else if (car == 'T')
+    } else if (car == 'T') {
       atras();
-    else
-      alto(); 
+    } else {
+      alto();  // Parar los motores
+    }
   }
 }
 
-void atras()
-{
-  digitalWrite(in1,HIGH);
-  digitalWrite(in2,LOW);
-  digitalWrite(in3,HIGH);
-  digitalWrite(in4,LOW);
+// Función para mover el carrito hacia atrás
+void atras() {
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
 }
 
-void adelante()
-{
+// Función para mover el carrito hacia adelante
+void adelante() {
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
 }
 
-void alto()
-{
-  digitalWrite(in1,LOW);
-  digitalWrite(in2,LOW);
-  digitalWrite(in3,LOW);
-  digitalWrite(in4,LOW);
+// Función para detener el carrito
+void alto() {
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
 }
