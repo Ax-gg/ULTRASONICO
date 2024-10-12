@@ -3,8 +3,8 @@ int R1 = 4;   // Motor Derecho
 int R2 = 5;   // Motor Derecho
 int L1 = 6;   // Motor Izquierdo
 int L2 = 7;   // Motor Izquierdo
-int trigPin = 9;   // TRIG del sensor ultrasónico
-int echoPin = 10;  // ECHO del sensor ultrasónico
+int trigPin = 2;   // TRIG del sensor ultrasónico
+int echoPin = 3;   // ECHO del sensor ultrasónico
 
 void setup() {
   // Configuración de los pines de los motores como salida
@@ -12,10 +12,6 @@ void setup() {
   pinMode(R2, OUTPUT);
   pinMode(L1, OUTPUT);
   pinMode(L2, OUTPUT);
-
-  // Pines de control adicionales (si los usas para LEDs o indicadores)
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
 
   // Configuración de los pines del sensor ultrasónico
   pinMode(trigPin, OUTPUT);
@@ -32,8 +28,6 @@ void avanzar() {
   digitalWrite(R2, HIGH);
   digitalWrite(L1, LOW);
   digitalWrite(L2, HIGH);
-  digitalWrite(2, HIGH); // LED u otro indicador si es necesario
-  digitalWrite(3, LOW);
 }
 
 // Función para retroceder el carrito
@@ -43,8 +37,6 @@ void retroceder() {
   digitalWrite(R2, LOW);
   digitalWrite(L1, HIGH);
   digitalWrite(L2, LOW);
-  digitalWrite(2, LOW);  // LED u otro indicador si es necesario
-  digitalWrite(3, HIGH);
 }
 
 // Función para girar a la derecha
@@ -54,8 +46,6 @@ void girarDerecha() {
   digitalWrite(R2, LOW);  // Motor derecho hacia atrás
   digitalWrite(L1, LOW);
   digitalWrite(L2, HIGH); // Motor izquierdo hacia adelante
-  digitalWrite(2, LOW);
-  digitalWrite(3, HIGH);  // LED u otro indicador si es necesario
 }
 
 // Función para girar a la izquierda
@@ -65,8 +55,6 @@ void girarIzquierda() {
   digitalWrite(R2, HIGH); // Motor derecho hacia adelante
   digitalWrite(L1, HIGH);
   digitalWrite(L2, LOW);  // Motor izquierdo hacia atrás
-  digitalWrite(2, HIGH);  // LED u otro indicador si es necesario
-  digitalWrite(3, LOW);
 }
 
 // Función para medir la distancia usando el sensor ultrasónico
@@ -93,7 +81,7 @@ void loop() {
   Serial.println(distancia);
 
   // Si hay un obstáculo cerca (menos de 5 cm), retroceder y girar
-  if (distancia < 5) {
+  if (distancia>0 && distancia < 5) {
     retroceder();
     delay(500);  // Retroceder por medio segundo
     girarDerecha();
