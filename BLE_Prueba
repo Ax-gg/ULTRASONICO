@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 
 // Inicializamos el BLE en los pines 2 (RX) y 3 (TX)
-SoftwareSerial ble(2, 3);
+SoftwareSerial ble(8, 9);
 
 int in1 = 4;
 int in2 = 5;
