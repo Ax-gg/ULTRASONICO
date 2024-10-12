@@ -1,49 +1,75 @@
-// Pines para los motores
-int R1 = 4;  // Motor Derecho
-int R2 = 5;  // Motor Derecho
-int L1 = 6;  // Motor Izquierdo
-int L2 = 7;  // Motor Izquierdo
-
-// Pines para el sensor ultrasónico
-int trigPin = 9;  // TRIG
-int echoPin = 10; // ECHO
+// Pines para los motores y el sensor ultrasónico
+int R1 = 4;   // Motor Derecho
+int R2 = 5;   // Motor Derecho
+int L1 = 6;   // Motor Izquierdo
+int L2 = 7;   // Motor Izquierdo
+int trigPin = 9;   // TRIG del sensor ultrasónico
+int echoPin = 10;  // ECHO del sensor ultrasónico
 
 void setup() {
-  // Configuramos los pines de los motores como salida
+  // Configuración de los pines de los motores como salida
   pinMode(R1, OUTPUT);
   pinMode(R2, OUTPUT);
   pinMode(L1, OUTPUT);
   pinMode(L2, OUTPUT);
 
-  // Configuramos los pines del sensor ultrasónico
+  // Pines de control adicionales (si los usas para LEDs o indicadores)
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+
+  // Configuración de los pines del sensor ultrasónico
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  
-  // Iniciamos la comunicación serial para depurar
+
+  // Inicialización de Serial (opcional, para depuración)
   Serial.begin(9600);
 }
 
-void loop() {
-  // Medimos la distancia
-  int distancia = medirDistancia();
-
-  // Mostramos la distancia en el monitor serial
-  Serial.print("Distancia: ");
-  Serial.println(distancia);
-
-  // Si la distancia es menor a 5 cm, retrocede y luego gira a la derecha
-  if (distancia < 5 && distancia > 0) { // Aseguramos que la distancia sea válida
-    retroceder();
-    delay(500);  // Retroceder por 500 ms
-    girarDerecha();
-    delay(500);  // Girar por 500 ms
-  } else {
-    avanzar();  // Si no hay obstáculo, seguir avanzando
-  }
-
-  delay(100);  // Esperar un poco antes de medir de nuevo
+// Función para avanzar el carrito
+void avanzar() {
+  // Mover ambos motores hacia adelante
+  digitalWrite(R1, LOW);
+  digitalWrite(R2, HIGH);
+  digitalWrite(L1, LOW);
+  digitalWrite(L2, HIGH);
+  digitalWrite(2, HIGH); // LED u otro indicador si es necesario
+  digitalWrite(3, LOW);
 }
 
+// Función para retroceder el carrito
+void retroceder() {
+  // Mover ambos motores hacia atrás
+  digitalWrite(R1, HIGH);
+  digitalWrite(R2, LOW);
+  digitalWrite(L1, HIGH);
+  digitalWrite(L2, LOW);
+  digitalWrite(2, LOW);  // LED u otro indicador si es necesario
+  digitalWrite(3, HIGH);
+}
+
+// Función para girar a la derecha
+void girarDerecha() {
+  // El motor derecho va hacia atrás, el motor izquierdo hacia adelante
+  digitalWrite(R1, HIGH);
+  digitalWrite(R2, LOW);  // Motor derecho hacia atrás
+  digitalWrite(L1, LOW);
+  digitalWrite(L2, HIGH); // Motor izquierdo hacia adelante
+  digitalWrite(2, LOW);
+  digitalWrite(3, HIGH);  // LED u otro indicador si es necesario
+}
+
+// Función para girar a la izquierda
+void girarIzquierda() {
+  // El motor derecho va hacia adelante, el motor izquierdo hacia atrás
+  digitalWrite(R1, LOW);
+  digitalWrite(R2, HIGH); // Motor derecho hacia adelante
+  digitalWrite(L1, HIGH);
+  digitalWrite(L2, LOW);  // Motor izquierdo hacia atrás
+  digitalWrite(2, HIGH);  // LED u otro indicador si es necesario
+  digitalWrite(3, LOW);
+}
+
+// Función para medir la distancia usando el sensor ultrasónico
 int medirDistancia() {
   // Enviar señal del TRIG
   digitalWrite(trigPin, LOW);
@@ -53,37 +79,28 @@ int medirDistancia() {
   digitalWrite(trigPin, LOW);
 
   // Recibir la señal de ECHO y calcular la distancia
-  long duracion = pulseIn(echoPin, HIGH, 30000); // Agregamos un timeout de 30ms para evitar quedarse esperando por siempre
+  int duracion = pulseIn(echoPin, HIGH);
   int distancia = duracion * 0.034 / 2;  // Convertir tiempo en distancia en cm
-  
-  // Devolvemos -1 si no se mide nada para evitar errores
-  if (duracion == 0) {
-    return -1;
+  return distancia;
+}
+
+void loop() {
+  // Medimos la distancia
+  int distancia = medirDistancia();
+
+  // Mostrar la distancia en el monitor serial (opcional)
+  Serial.print("Distancia: ");
+  Serial.println(distancia);
+
+  // Si hay un obstáculo cerca (menos de 5 cm), retroceder y girar
+  if (distancia < 5) {
+    retroceder();
+    delay(500);  // Retroceder por medio segundo
+    girarDerecha();
+    delay(300);  // Girar por 1 segundo
   } else {
-    return distancia;
+    avanzar();  // Si no hay obstáculo, seguir avanzando
   }
-}
 
-void retroceder() {
-  // Mover ambos motores hacia adelante (antes estaba mal definido)
-  digitalWrite(R1, HIGH);
-  digitalWrite(R2, LOW);
-  digitalWrite(L1, HIGH);
-  digitalWrite(L2, LOW);
-}
-
-void avanzar() {
-  // Mover ambos motores hacia atrás (antes estaba mal definido)
-  digitalWrite(R1, LOW);
-  digitalWrite(R2, HIGH);
-  digitalWrite(L1, LOW);
-  digitalWrite(L2, HIGH);
-}
-
-void girarDerecha() {
-  // Mover el carrito hacia la derecha
-  digitalWrite(R1, LOW);
-  digitalWrite(R2, HIGH);
-  digitalWrite(L1, HIGH);
-  digitalWrite(L2, LOW);
+  delay(100);  // Esperar un poco antes de medir de nuevo
 }
