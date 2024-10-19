@@ -1,4 +1,4 @@
-/* 
+/*
    -- New project --
    
    This source code of graphical user interface 
@@ -89,35 +89,31 @@ int medirDistancia() {
 
 // Funciones de movimiento del carrito
 void avanzar() {
-  // Invertimos la lógica del motor izquierdo
   digitalWrite(PIN_MOTOR_RIGHT_UP, LOW);
   digitalWrite(PIN_MOTOR_RIGHT_DN, HIGH);
-  digitalWrite(PIN_MOTOR_LEFT_UP, HIGH);  // Invertido
-  digitalWrite(PIN_MOTOR_LEFT_DN, LOW);   // Invertido
+  digitalWrite(PIN_MOTOR_LEFT_UP, LOW);
+  digitalWrite(PIN_MOTOR_LEFT_DN, HIGH);
 }
 
 void retroceder() {
-  // Invertimos la lógica del motor izquierdo
   digitalWrite(PIN_MOTOR_RIGHT_UP, HIGH);
   digitalWrite(PIN_MOTOR_RIGHT_DN, LOW);
-  digitalWrite(PIN_MOTOR_LEFT_UP, LOW);  // Invertido
-  digitalWrite(PIN_MOTOR_LEFT_DN, HIGH); // Invertido
+  digitalWrite(PIN_MOTOR_LEFT_UP, HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_DN, LOW);
 }
 
 void girarDerecha() {
-  // Invertimos la lógica del motor izquierdo
   digitalWrite(PIN_MOTOR_RIGHT_UP, HIGH);
   digitalWrite(PIN_MOTOR_RIGHT_DN, LOW);
-  digitalWrite(PIN_MOTOR_LEFT_UP, HIGH); // Invertido
-  digitalWrite(PIN_MOTOR_LEFT_DN, LOW);  // Invertido
+  digitalWrite(PIN_MOTOR_LEFT_UP, LOW);
+  digitalWrite(PIN_MOTOR_LEFT_DN, HIGH);
 }
 
 void girarIzquierda() {
-  // Invertimos la lógica del motor izquierdo
   digitalWrite(PIN_MOTOR_RIGHT_UP, LOW);
   digitalWrite(PIN_MOTOR_RIGHT_DN, HIGH);
-  digitalWrite(PIN_MOTOR_LEFT_UP, LOW);  // Invertido
-  digitalWrite(PIN_MOTOR_LEFT_DN, HIGH); // Invertido
+  digitalWrite(PIN_MOTOR_LEFT_UP, HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_DN, LOW);
 }
 
 // Función para controlar los motores manualmente con el joystick
@@ -131,9 +127,8 @@ void Wheel(int joystick_x, int joystick_y) {
   digitalWrite(PIN_MOTOR_RIGHT_UP, joystick_y > 0 ? LOW : HIGH);
   digitalWrite(PIN_MOTOR_RIGHT_DN, joystick_y > 0 ? HIGH : LOW);
   
-  // Invertimos la lógica del motor izquierdo
-  digitalWrite(PIN_MOTOR_LEFT_UP, joystick_y > 0 ? HIGH : LOW);  // Invertido
-  digitalWrite(PIN_MOTOR_LEFT_DN, joystick_y > 0 ? LOW : HIGH);  // Invertido
+  digitalWrite(PIN_MOTOR_LEFT_UP, joystick_y > 0 ? LOW : HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_DN, joystick_y > 0 ? HIGH : LOW);
 }
 
 void loop() {
